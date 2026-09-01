@@ -1,0 +1,1 @@
+export { PedidoService } from "./PedidoService";
