@@ -29,7 +29,7 @@ export class Produto {
   }
 
   toString(){
-    return `Produto(${this.id},${this.nome},${this.preco})`;
+    return `Produto(${this.id},${this.nome},${this.preco.toFixed(2).replace(".", ",")})`;
   }
 }
 export default Produto;

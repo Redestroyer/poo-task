@@ -11,10 +11,16 @@ export class ItemPedidoPromocional extends ItemPedido {
     super(produto, quantidade);
     this._desconto = desconto ?? 0.1;
   }
+  get desconto() { return this._desconto; }
 
   override calcularSubtotal() {
     const subtotalOriginal = super.calcularSubtotal();
     return subtotalOriginal * (1 - this._desconto);
+  }
+  override canMergeWith(other: ItemPedido): boolean {
+    return other instanceof ItemPedidoPromocional
+      && this.desconto == other.desconto
+      && super.canMergeWith(other);
   }
 
   override toString() {
