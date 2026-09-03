@@ -22,7 +22,7 @@ export class ItemPedido {
   }
 
   calcularSubtotal(){
-    return this._produto.preco * this.quantidade;
+    return this.produto.preco * this.quantidade;
   }
   canMergeWith(other: ItemPedido): boolean {
     return this.produto.id == other.produto.id;
@@ -33,7 +33,7 @@ export class ItemPedido {
   }
 
   toString(){
-    return(`Subtotal de (${this._produto} x ${this.quantidade}): R$ ${this.calcularSubtotal().toFixed(2).replace(".", ",")}`); 
+    return(`Subtotal de (${this.produto} x ${this.quantidade}): R$ ${this.calcularSubtotal().toFixed(2).replace(".", ",")}`); 
   }
 }
 export default ItemPedido;

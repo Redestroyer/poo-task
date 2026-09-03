@@ -24,7 +24,7 @@ export class ItemPedidoPromocional extends ItemPedido {
   }
 
   override toString() {
-    return super.toString()+ ` [desconto: ${this._desconto*100}%]`;
+    return `${super.toString()} [desconto: ${this._desconto*100}%]`;
   }
 }
 export default ItemPedidoPromocional;

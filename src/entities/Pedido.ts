@@ -2,8 +2,15 @@ import type Cliente from "./Cliente";
 import ItemPedido from "./ItemPedido";
 import Produto from "./Produto";
 
+export enum Situação {
+  ABERTO = "ABERTO",
+  FINALIZADO = "FINALIZADO",
+  CANCELADO = "CANCELADO",
+}
+
 export class Pedido {
   private _itens: ItemPedido[]
+  private _situação: Situação = Situação.ABERTO;
 
   constructor(
     private _cliente: Cliente,
@@ -15,9 +22,38 @@ export class Pedido {
   get cliente() { return this._cliente; }
   get itens() { return this._itens.filter(_ => true); }
 
+  get situação() { return this._situação; }
+  get aberto() { return this.situação === Situação.ABERTO}
+  estáAberto(): this is { situação: Situação.ABERTO } { return this.aberto; }
+  get finalizado() { return this.situação === Situação.FINALIZADO}
+  estáFinalizado(): this is { situação: Situação.FINALIZADO } { return this.finalizado; }
+  get cancelado() { return this.situação === Situação.CANCELADO}
+  estáCancelado(): this is { situação: Situação.CANCELADO } { return this.cancelado; }
+
+  guardAberto(): this & { situação: Situação.ABERTO } {
+    if (!this.estáAberto())
+      throw new Error(`Pedido já ${this.situação.toLowerCase()}.`);
+
+    return this;
+  }
+  finalizar(): this & { situação: Situação.FINALIZADO } {
+    this.guardAberto();
+
+    this._situação = Situação.FINALIZADO;
+    return this as any;
+  }
+  cancelar(): this & { situação: Situação.CANCELADO } {
+    this.guardAberto();
+
+    this._situação = Situação.CANCELADO;
+    return this as any;
+  }
+
   adicionarItem(item: ItemPedido): this;
   adicionarItem(produto: Produto, quantidade?: number): this;
   adicionarItem(item: ItemPedido | Produto, quantidade?: number): this {
+    this.guardAberto();
+
     if (item instanceof Produto) {
       return this.adicionarItem(new ItemPedido(item, quantidade ?? 1));
     }
@@ -37,6 +73,8 @@ export class Pedido {
   removerPedido(item: Produto, quantidade: number): this;
   removerPedido(condição: (item: ItemPedido) => boolean): this;
   removerPedido(condição: ItemPedido | Produto | ((item: ItemPedido) => boolean), quantidade?: number): this {
+    this.guardAberto();
+
     if (condição instanceof ItemPedido)
       return this.removerPedido(e => e.produto.id == condição.produto.id && e.quantidade == condição.quantidade);
     if (condição instanceof Produto)
@@ -49,6 +87,8 @@ export class Pedido {
   alterarQuantidadeDeProduto(produto: Produto, quantidade: number): this;
   alterarQuantidadeDeProduto(produto: Produto, quantidade: (anterior: number) => number): this;
   alterarQuantidadeDeProduto(produto: Produto, quantidade: number | ((anterior: number) => number)): this {
+    this.guardAberto();
+
     if (typeof quantidade === "number")
       return this.alterarQuantidadeDeProduto(produto, _ => quantidade);
 
@@ -56,7 +96,7 @@ export class Pedido {
     if (!existing)
       throw new Error("Produto não encontrado.");
     existing.quantidade = quantidade(existing.quantidade);
-    return this
+    return this;
   }
 
   calcularTotal(inicial: number = 0) {
@@ -67,4 +107,4 @@ export class Pedido {
     return `Total do pedido: R$ ${this.calcularTotal().toFixed(2).replace(".", ",")}`;
   }
 }
-export default Pedido
+export default Pedido;

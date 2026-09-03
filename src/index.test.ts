@@ -54,7 +54,7 @@ describe("Histórias de usuário", () => {
       .adicionarItem(suco)
     ;
     pedido.removerPedido(bolo);
-    expect(pedido.itens.map(e => e.produto)).not.toEqual([café, bolo, suco]);
+    expect(pedido.itens.map(e => e.produto)).not.toContain(bolo);
     expect(pedido.toString()).toBe("Total do pedido: R$ 11,00")
   });
   test("HU03", () => {
@@ -73,5 +73,41 @@ describe("Histórias de usuário", () => {
     expect(() => {
       pedido.alterarQuantidadeDeProduto(bolo, -2);
     }).toThrow("A quantidade de um item deve ser maior que zero.");
+  });
+  test("HU04", () => {
+    const pedido = pedidoService.criarPedido(ana)
+      .adicionarItem(café)
+      .adicionarItem(bolo)
+    ;
+    expect(pedido.aberto).toBe(true);
+    pedido.finalizar();
+    expect(pedido.finalizado).toBe(true);
+    expect(() => {
+      pedido.adicionarItem(suco);
+    }).toThrow("Pedido já finalizado.");
+    expect(() => {
+      pedido.removerPedido(café);
+    }).toThrow("Pedido já finalizado.");
+    expect(() => {
+      pedido.alterarQuantidadeDeProduto(bolo, 2);
+    }).toThrow("Pedido já finalizado.");
+  });
+  test("HU05", () => {
+    const pedido = pedidoService.criarPedido(ana)
+      .adicionarItem(café)
+      .adicionarItem(bolo)
+    ;
+    expect(pedido.aberto).toBe(true);
+    pedido.cancelar();
+    expect(pedido.cancelado).toBe(true);
+    expect(() => {
+      pedido.adicionarItem(suco);
+    }).toThrow("Pedido já cancelado.");
+    expect(() => {
+      pedido.removerPedido(café);
+    }).toThrow("Pedido já cancelado.");
+    expect(() => {
+      pedido.alterarQuantidadeDeProduto(bolo, 2);
+    }).toThrow("Pedido já cancelado.");
   });
 });
