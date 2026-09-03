@@ -94,7 +94,7 @@ describe("Histórias de usuário", () => {
   });
   test("HU05", () => {
     const pedido = pedidoService.criarPedido(ana)
-      .adicionarItem(café)
+      .adicionarItem(café, 2)
       .adicionarItem(bolo)
     ;
     expect(pedido.aberto).toBe(true);
