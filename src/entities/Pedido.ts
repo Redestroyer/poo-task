@@ -9,6 +9,7 @@ export enum Situação {
 }
 
 export class Pedido {
+  public static readonly Situação = Situação;
   private _itens: ItemPedido[]
   private _situação: Situação = Situação.ABERTO;
 

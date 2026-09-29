@@ -13,11 +13,11 @@ export class Produto {
   get nome() {
     return this._nome;
   }
-  get preco() {
+  get preço() {
     return this._preco;
   }
 
-  set preco(novoPreco) {
+  set preço(novoPreco) {
     Produto.validarPreco(novoPreco);
     this._preco = novoPreco;
   }
@@ -29,7 +29,7 @@ export class Produto {
   }
 
   toString(){
-    return `Produto(${this.id},${this.nome},${this.preco.toFixed(2).replace(".", ",")})`;
+    return `Produto(${this.id},${this.nome},${this.preço.toFixed(2).replace(".", ",")})`;
   }
 }
 export default Produto;

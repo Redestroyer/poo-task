@@ -1,0 +1,1 @@
+export { ProdutoRepository } from "./ProdutoRepository";

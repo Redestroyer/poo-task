@@ -22,7 +22,7 @@ export class ItemPedido {
   }
 
   calcularSubtotal(){
-    return this.produto.preco * this.quantidade;
+    return this.produto.preço * this.quantidade;
   }
   canMergeWith(other: ItemPedido): boolean {
     return this.produto.id == other.produto.id;
