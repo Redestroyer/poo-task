@@ -14,13 +14,12 @@ export class Pedido {
   private _situação: Situação = Situação.ABERTO;
 
   constructor(
-    private _cliente: Cliente,
+    public readonly id: number,
+    public readonly cliente: Cliente,
     itens?: ItemPedido[]
   ) {
     this._itens = itens ?? [];
   }
-
-  get cliente() { return this._cliente; }
   get itens() { return this._itens.filter(_ => true); }
 
   get situação() { return this._situação; }
@@ -95,7 +94,7 @@ export class Pedido {
 
     const existing = this._itens.find(e => e.produto.id == produto.id);
     if (!existing)
-      throw new Error("Produto não encontrado.");
+      throw new Error(`Produto ${produto.id} não encontrado.`);
     existing.quantidade = quantidade(existing.quantidade);
     return this;
   }

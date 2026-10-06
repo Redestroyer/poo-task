@@ -1,7 +1,7 @@
 export class Cliente {
   constructor(
-    private _id: number,
-    private _nome: string
+    public readonly id: number,
+    public readonly nome: string
   ) {}
 }
 export default Cliente;

@@ -22,7 +22,7 @@ export class Produto {
     this._preco = novoPreco;
   }
 
-  private static validarPreco(preco: number) {
+  static validarPreco(preco: number) {
     if (preco < 0) {
       throw new Error("O preço do produto não pode ser negativo.");
     }
