@@ -18,7 +18,7 @@ Stores `Pedido`s.
 ## `PedidoService`
 ### Functions
 - `adicionarProduto(pedido: number, produto: number, quantidade: number)`
-- `removerProduto(pedido: number, produto: number)`: Returns the removed items of given product.
+- `removerProduto(pedido: number, produto: number)`
 - `alterarQuantidade(pedido: number, produto: number, quantidade: number)`
 - `finalizarPedido(pedido: number)`
 - `cancelarPedido(pedido: number)`
